@@ -69,11 +69,19 @@ def main():
     args = []
     for ftp in ftp_list:
         raw_name = ftp.split('/')[-1][:-4]
-        real_ftp = df_all[df_all['assembly_accession.x'] == raw_name]['ftp_path'].to_list()[0]
+        
+        # ✅ Updated: Skip if no match is found
+        matching_rows = df_all[df_all['assembly_accession.x'] == raw_name]
+        if matching_rows.empty:
+            print(f"Warning: No match found for {raw_name}, skipping...")
+            continue
+        
+        real_ftp = matching_rows['ftp_path'].to_list()[0]
         real_name = real_ftp.split('/')[-1]
         fna_file_url = real_ftp + '/' + real_name + config.file_type
         output_file_name = config.output_path + real_name + config.file_type
         args.append([real_name, fna_file_url, output_file_name, successful_list])
+    
     multi_download(args)
 
 if __name__ == '__main__':
