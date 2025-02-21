@@ -69,7 +69,7 @@ def main():
     args = []
     for ftp in ftp_list:
         raw_name = ftp.split('/')[-1][:-4]
-        real_ftp = df_all[df_all['assembly_accession'] == raw_name]['ftp_path'].to_list()[0]
+        real_ftp = df_all[df_all['assembly_accession.x'] == raw_name]['ftp_path'].to_list()[0]
         real_name = real_ftp.split('/')[-1]
         fna_file_url = real_ftp + '/' + real_name + config.file_type
         output_file_name = config.output_path + real_name + config.file_type
